@@ -1,5 +1,10 @@
 # Arrays with arbitrary offsets
 
+###### V1.1, 31.05.01
+
+# Used format() in print.Oarray
+# tidied out diagnostic assign in [<-.Oarray
+
 "Oarray" <-
 function(data=NA, dim=length(data), dimnames=NULL, offset=NA,
   drop.negative=TRUE)
@@ -29,7 +34,7 @@ function(data=NA, dim=length(data), dimnames=NULL, offset=NA,
 "as.array.default" <- get("as.array", pos=grep("package:base",
   search()), mode="function")
 
-"as.array" <- function(x, ...)
+"as.array" <- function(x)
   UseMethod("as.array")
 
 "as.array.Oarray" <- function(x)
@@ -98,7 +103,6 @@ function(data=NA, dim=length(data), dimnames=NULL, offset=NA,
 "[<-.Oarray" <- function(x, ..., value)
 {
   mc <- match.call()
-  assign("mc", mc, envir=.GlobalEnv)
   k <- length(mc)
   offset <- attr(x, "offset")
   dn <- attr(x, "drop.negative")
@@ -132,8 +136,7 @@ function(x, ...)
     if (is.null(dn[[i]])) {
       dn[[i]] <- 0:(d[i]-1) + offset[i]
       if (i==1 || i==2) {
-        wd <- nchar(dn[[i]])
-        dn[[i]] <- formatC(dn[[i]], format="d", width=max(wd))
+        dn[[i]] <- format(dn[[i]])
         if (i==1)
           dn[[i]] <- paste("[", dn[[i]], ",]", sep="")
         else

@@ -31,10 +31,11 @@ as.array(x)
 Oarray(data=NA, dim=length(data), dimnames=NULL, offset=NA,
   drop.negative=TRUE)
 as.Oarray(x, offset=NA, drop.negative=TRUE)
-as.array.Oarray(x)
-[.Oarray(x, ...)
-[<-.Oarray(x, ..., value)
-print.Oarray(x, ...)
+as.array(x)
+print(x)
+x[i]
+x[i, j, \dots]
+x[i, j, \dots, drop=TRUE]
 }
 
 \arguments{
@@ -42,7 +43,7 @@ print.Oarray(x, ...)
   \item{offset}{Vector of first index values for each extent (defaults to 1s)}
   \item{drop.negative}{Should negative subscripts indicate exclusion?}
   \item{x}{An array, possibly of class \code{Oarray}}
-  \item{value}{Vector to be substituted into \code{x}}
+  \item{i, j, \dots}{Indexing arguments to \code{x}}
 }
 
 \value{Typically and array with or without a \code{Oarray} class
