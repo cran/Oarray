@@ -1,34 +1,33 @@
 # Arrays with arbitrary offsets
 
 ###### V1.1, 31.05.01
+###### V1.3 Minor change to documentation
 
 # Used format() in print.Oarray
-# tidied out diagnostic assign in [<-.Oarray
+# tidied out diagnostic assign in [<-.Oarray, changed default for offset
 
 "Oarray" <-
-function(data=NA, dim=length(data), dimnames=NULL, offset=NA,
+function(data=NA, dim=length(data), dimnames=NULL, offset=rep(1, length(dim)),
   drop.negative=TRUE)
 {
-  if (is.na(offset))
-    offset <- rep(1, length(dim))
-  else {
-    if (!is.numeric(offset) || length(offset)!=length(dim))
-      stop("\"offset\" must be numeric vector with same length as \"dim\"")
-    if (drop.negative && any(offset<0))
-      stop("Non-negative offsets only")
-  }
-  robj <- array(data=data, dim=dim, dimnames=dimnames)
+  if (!is.numeric(offset) || length(offset) != length(dim))
+    stop("\"offset\" must be numeric vector with same length as \"dim\"")
+  if (drop.negative && any(offset < 0))
+    stop("Non-negative offsets only")
+
+  robj <- array(data = data, dim = dim, dimnames = dimnames)
   attr(robj, "offset") <- offset
   attr(robj, "drop.negative") <- drop.negative
   class(robj) <- "Oarray"
   robj
 }
 
-"as.Oarray" <- function(x, offset=NA, drop.negative=TRUE)
+"as.Oarray" <- function(x, offset=rep(1, length(dim)), drop.negative=TRUE)
 {
   x <- as.array(x)
   dim <- dim(x)
-  Oarray(x, dim(x), dimnames(x), offset, drop.negative)
+  Oarray(x, dim = dim, dimnames = dimnames(x), offset = offset,
+    drop.negative = drop.negative)
 }
 
 "as.array.default" <- get("as.array", pos=grep("package:base",

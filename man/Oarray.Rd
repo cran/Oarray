@@ -28,18 +28,18 @@ as.array(x)
 }
 
 \usage{
-Oarray(data=NA, dim=length(data), dimnames=NULL, offset=NA,
+Oarray(data=NA, dim=length(data), dimnames=NULL, offset=rep(1, length(dim)),
   drop.negative=TRUE)
-as.Oarray(x, offset=NA, drop.negative=TRUE)
-as.array(x)
-print(x)
+as.Oarray(x, offset=rep(1, length(dim)), drop.negative=TRUE)
+\method{as.array}{Oarray}(x)
+\method{print}{Oarray}(x)
 x[i]
 x[i, j, \dots]
 x[i, j, \dots, drop=TRUE]
 }
 
 \arguments{
-  \item{data, dim, dimnames}{As in the function \code{array}}
+  \item{data, dim, dimnames, drop}{As in the function \code{array}}
   \item{offset}{Vector of first index values for each extent (defaults to 1s)}
   \item{drop.negative}{Should negative subscripts indicate exclusion?}
   \item{x}{An array, possibly of class \code{Oarray}}
@@ -62,6 +62,9 @@ the case where dimnames are not provided.
 \code{[.Oarray} where it is provided as the final argument inside
 the square brackets.
 
+The function \code{as.array} in \code{package:base} is redefined to
+operate on objects of class \code{Oarray}, using the S3 method.
+
 The function \code{.handleTheOffset} is not for general use.}
 
 
@@ -77,7 +80,7 @@ fred <- Oarray(1:24, 2:4, list(c("sad", "happy"), NULL, NULL),
 
 tmp <- as.array(fred)
 fred1 <- as.Oarray(tmp, offset=rep(7, 3))
-stopifnot(is.Oarray(fred1), all.equal(fred, fred1))
+stopifnot(identical(fred, fred1))
 
 print.default(fred)  # print method provides numbers for
 fred                 # non-named extents
