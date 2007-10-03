@@ -1,1 +1,6 @@
-Oarray                   Arrays with arbitrary offsets
+Oarray            Create Oarray object
+as.Oarray         Coerce array into Oarray
+as.array          Coerce Oarray into array
+x[i, j, ...]      Subset Oarray
+x[i, j, ...] <-   Assign to Oarray
+print.Oarray      Print Oarray with appropriate indices

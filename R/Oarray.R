@@ -6,6 +6,15 @@
 # Used format() in print.Oarray
 # tidied out diagnostic assign in [<-.Oarray, changed default for offset
 
+###### V1.4 Minor change to documentation, after email from Kurt
+
+# Separate internal.Rd file, avoiding use of \synopsis
+# Using \details to illustrate use of x[i, j] and x[i, j] <-
+# Explicit INDEX file showing main functions
+# GPL as licence in DESCRIPTION
+# Changed email addresses to Bristol
+# Used as.array.default <- base::as.array for making as.array generic
+
 "Oarray" <-
 function(data=NA, dim=length(data), dimnames=NULL, offset=rep(1, length(dim)),
   drop.negative=TRUE)
@@ -30,8 +39,7 @@ function(data=NA, dim=length(data), dimnames=NULL, offset=rep(1, length(dim)),
     drop.negative = drop.negative)
 }
 
-"as.array.default" <- get("as.array", pos=grep("package:base",
-  search()), mode="function")
+"as.array.default" <- base::as.array
 
 "as.array" <- function(x)
   UseMethod("as.array")

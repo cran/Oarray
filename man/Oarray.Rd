@@ -2,11 +2,9 @@
 
 \alias{Oarray}
 \alias{as.Oarray}
-\alias{as.array.default}
-\alias{as.array}
 \alias{as.array.Oarray}
 \alias{is.Oarray}
-\alias{.handleTheOffset}
+
 \alias{[.Oarray}
 \alias{[<-.Oarray}
 \alias{print.Oarray}
@@ -21,56 +19,50 @@ to accomodate the \R convention of dropping components with
 negative indices.  In order to use negative offsets, the flag
 \code{drop.negative} can be set \code{FALSE}.}
 
-\synopsis{
-.handleTheOffset(mc, dim, offset, dn)
-as.array.default(x)
-as.array(x)
-}
-
 \usage{
 Oarray(data=NA, dim=length(data), dimnames=NULL, offset=rep(1, length(dim)),
   drop.negative=TRUE)
 as.Oarray(x, offset=rep(1, length(dim)), drop.negative=TRUE)
 \method{as.array}{Oarray}(x)
-\method{print}{Oarray}(x)
-x[i]
-x[i, j, \dots]
-x[i, j, \dots, drop=TRUE]
+\method{print}{Oarray}(x, ...)
 }
 
 \arguments{
   \item{data, dim, dimnames, drop}{As in the function \code{array}}
   \item{offset}{Vector of first index values for each extent (defaults to 1s)}
   \item{drop.negative}{Should negative subscripts indicate exclusion?}
-  \item{x}{An array, possibly of class \code{Oarray}}
-  \item{i, j, \dots}{Indexing arguments to \code{x}}
+  \item{x}{An array, possibly of class \sQuote{Oarray}}
+  \item{...}{Additional arguments to \code{print}}
 }
 
-\value{Typically and array with or without a \code{Oarray} class
-attribute.  Extracting from an \code{Oarray} object unclasses the
+\details{
+Typical uses are
+\preformatted{
+  x[i, j]
+  x[i, j] <- someValues
+}
+where \code{x} is an object of class \sQuote{Oarray}.
+
+The use of \code{drop.negative = FALSE} will only work in
+\code{[.Oarray} where it is provided as the final argument inside
+the square brackets.
+}
+
+\value{Typically and array with or without a \sQuote{Oarray} class
+attribute.  Extracting from an \sQuote{Oarray} object unclasses the
 result which is then a simple array, but assigning into an
-\code{Oarray} object leaves the result as an \code{Oarray}
+\sQuote{Oarray} object leaves the result as an \sQuote{Oarray}
 object.
 
 The print method provides more informative extent labelling in
 the case where dimnames are not provided.
 }
 
-\author{Jonathan Rougier, \email{J.C.Rougier@durham.ac.uk}}
-
-\note{The use of \code{drop=FALSE} will only work in
-\code{[.Oarray} where it is provided as the final argument inside
-the square brackets.
-
-The function \code{as.array} in \code{package:base} is redefined to
-operate on objects of class \code{Oarray}, using the S3 method.
-
-The function \code{.handleTheOffset} is not for general use.}
+\author{Jonathan Rougier, \email{j.c.rougier@bristol.ac.uk}}
 
 
-\section{Side effects}{The function \code{as.array} from
-package:base is redefined to provide an \code{as.array.Oarray}
-method.}
+\section{Side effects}{The function \code{base::as.array} is redefined
+as generic, to provide an \code{as.array.Oarray} method.}
 
 \seealso{\code{\link{array}}}
 
