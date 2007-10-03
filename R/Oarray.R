@@ -118,7 +118,7 @@ if(getRversion() < "2.8.0"){
   mc[[1]] <- as.name("[")
   mc[[2]] <- as.name("x")
   x <- as.array(x)
-  eval(mc)
+  eval(mc, envir=NULL)
 }
 
 "[<-.Oarray" <- function(x, ..., value)
@@ -157,7 +157,7 @@ if(getRversion() < "2.8.0"){
   mc[[1]] <- as.name("[<-")
   mc[[2]] <- as.name("x")
   x <- as.array(x)
-  robj <- eval(mc)
+  robj <- eval(mc, envir=NULL)
   Oarray(robj, dim, dimnames(x), offset, dn)
 }
 
