@@ -5,9 +5,14 @@
 \alias{as.array.Oarray}
 \alias{is.Oarray}
 
+\alias{Oarray-class}
+\alias{slice.index,Oarray-method}
+
 \alias{[.Oarray}
 \alias{[<-.Oarray}
 \alias{print.Oarray}
+
+
 
 \title{Arrays with arbitrary offsets}
 

@@ -185,3 +185,16 @@ function(x, ...)
   dimnames(x) <- dn
   NextMethod("print")
 }
+
+
+setOldClass("Oarray")
+
+setMethod("slice.index","Oarray",function(x,MARGIN){
+  o <- attr(x,"offset")
+  attr <- attributes(x)
+  out <- slice.index(as.array(x),MARGIN)+o[MARGIN]-1L
+  attributes(out) <- attr
+  return(out)
+} )
+
+
