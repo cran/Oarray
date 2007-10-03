@@ -13,12 +13,14 @@
 # Explicit INDEX file showing main functions
 # GPL as licence in DESCRIPTION
 # Changed email addresses to Bristol
-# Used as.array.default <- base::as.array for making as.array generic
+# Used as.array.default <- base::as.array for making as.array generic [now changed for R >=- 2.8.0 ....rksh]
 
 "Oarray" <-
 function(data=NA, dim=length(data), dimnames=NULL, offset=rep(1, length(dim)),
   drop.negative=TRUE)
 {
+  if(length(offset)==1){offset <- rep(offset,length(dim))}
+  
   if (!is.numeric(offset) || length(offset) != length(dim))
     stop("\"offset\" must be numeric vector with same length as \"dim\"")
   if (drop.negative && any(offset < 0))
@@ -39,12 +41,13 @@ function(data=NA, dim=length(data), dimnames=NULL, offset=rep(1, length(dim)),
     drop.negative = drop.negative)
 }
 
-"as.array.default" <- base::as.array
 
-"as.array" <- function(x)
-  UseMethod("as.array")
+if(getRversion() < "2.8.0"){
+  as.array <- function(x,...){UseMethod("as.array")}
+  as.array.default <- function(x,...){base::as.array(x,...)}
+}
 
-"as.array.Oarray" <- function(x)
+"as.array.Oarray" <- function(x,...)
 {
   x <- unclass(x)
   attr(x, "offset") <- NULL
@@ -94,8 +97,19 @@ function(data=NA, dim=length(data), dimnames=NULL, offset=rep(1, length(dim)),
   dn <- attr(x, "drop.negative")
   dim <- dim(x)
 
-  if (k==3 && mc[[3]]=="")
-    return(as.array(x))
+  if( k==3 ){
+    if(mc[[3]] == ""){
+      return(as.array(x))
+    } 
+    args <- list(...)
+    index <- args[[1]]
+    if(is.logical(index)){
+      return(as.array(x)[index])
+    }
+    if(is.matrix(index)){
+      return(as.array(x)[1+sweep(index,2,offset)])
+    }
+  }
 
   if (k < 2+length(dim))
     stop("incorrect number of dimensions")
@@ -115,9 +129,27 @@ function(data=NA, dim=length(data), dimnames=NULL, offset=rep(1, length(dim)),
   dn <- attr(x, "drop.negative")
   dim <- dim(x)
 
-  if (k==4 && mc[[3]]=="")
-    return(Oarray(value, dim, dimnames(x), offset, dn))
-
+  if (k==4){
+    if (mc[[3]] == ""){
+      return(Oarray(value, dim, dimnames(x), offset, dn))
+    }
+    args <- list(...)
+    index <- args[[1]]
+    att <- attributes(x)
+    if(is.logical(index)){
+      x <- as.array(x)
+      x[index] <- value
+      attributes(x) <- att
+      return(x)
+    }
+    if(is.matrix(index)){
+      x <- as.array(x)
+      x[1+sweep(index,2,offset)] <- value
+      attributes(x) <- att
+      return(x)
+    }
+  }
+  
   if (k < 3+length(dim))
     stop("incorrect number of dimensions")
 

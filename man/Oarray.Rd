@@ -23,16 +23,18 @@ negative indices.  In order to use negative offsets, the flag
 Oarray(data=NA, dim=length(data), dimnames=NULL, offset=rep(1, length(dim)),
   drop.negative=TRUE)
 as.Oarray(x, offset=rep(1, length(dim)), drop.negative=TRUE)
-\method{as.array}{Oarray}(x)
+\method{as.array}{Oarray}(x, ...)
 \method{print}{Oarray}(x, ...)
 }
 
 \arguments{
   \item{data, dim, dimnames, drop}{As in the function \code{array}}
-  \item{offset}{Vector of first index values for each extent (defaults to 1s)}
+  \item{offset}{Vector of first index values for each extent (defaults
+  to 1s); a length-one argument will be silently recycled to the
+  appropriate length}
   \item{drop.negative}{Should negative subscripts indicate exclusion?}
   \item{x}{An array, possibly of class \sQuote{Oarray}}
-  \item{...}{Additional arguments to \code{print}}
+  \item{...}{Additional arguments to \code{print} or \code{as.array()}}
 }
 
 \details{
@@ -41,7 +43,14 @@ Typical uses are
   x[i, j]
   x[i, j] <- someValues
 }
-where \code{x} is an object of class \sQuote{Oarray}.
+where \code{x} is an object of class \sQuote{Oarray} and \code{i},
+\code{j} are indices specifying which elements to extract or replace.
+
+Indexing may be via a logical matrix, which indicates which elements to select.
+
+Indexing may be via a single numeric matrix with the one column for each
+dimension: the offset is \code{sweep()}-ed out.  See \code{Extract.Rd}
+for details.
 
 The use of \code{drop.negative = FALSE} will only work in
 \code{[.Oarray} where it is provided as the final argument inside
@@ -64,7 +73,7 @@ the case where dimnames are not provided.
 \section{Side effects}{The function \code{base::as.array} is redefined
 as generic, to provide an \code{as.array.Oarray} method.}
 
-\seealso{\code{\link{array}}}
+\seealso{\code{\link{array}},\code{\link{Extract}}}
 
 \examples{
 fred <- Oarray(1:24, 2:4, list(c("sad", "happy"), NULL, NULL),
@@ -101,6 +110,15 @@ fred[-(1:0), , 7:8]
 fred[-(1:0), , 7:8] <- 100
 dimnames(fred) <- list(c("sad", "happy"), NULL, NULL)
 fred["sad", -2, 10] <- NA
+
+
+# array and logical indexing
+
+a <- Oarray(0, dim=rep(2,4),offset=rep(0,4))
+a[diag(4)] <- 1
+
+a[a == 0] <- NA
+
 }
 
 \keyword{array}
