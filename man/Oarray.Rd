@@ -62,7 +62,7 @@ The use of \code{drop.negative = FALSE} will only work in
 the square brackets.
 }
 
-\value{Typically and array with or without a \sQuote{Oarray} class
+\value{Typically an array, either with or without the \sQuote{Oarray} class
 attribute.  Extracting from an \sQuote{Oarray} object unclasses the
 result which is then a simple array, but assigning into an
 \sQuote{Oarray} object leaves the result as an \sQuote{Oarray}

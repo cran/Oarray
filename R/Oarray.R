@@ -41,12 +41,6 @@ function(data=NA, dim=length(data), dimnames=NULL, offset=rep(1, length(dim)),
     drop.negative = drop.negative)
 }
 
-
-if(getRversion() < "2.8.0"){
-  as.array <- function(x,...){UseMethod("as.array")}
-  as.array.default <- function(x,...){base::as.array(x,...)}
-}
-
 "as.array.Oarray" <- function(x,...)
 {
   x <- unclass(x)
@@ -97,10 +91,12 @@ if(getRversion() < "2.8.0"){
   dn <- attr(x, "drop.negative")
   dim <- dim(x)
 
+      browser()
   if( k==3 ){
     if(mc[[3]] == ""){
       return(as.array(x))
-    } 
+    }
+
     args <- list(...)
     index <- args[[1]]
     if(is.logical(index)){
@@ -185,7 +181,6 @@ function(x, ...)
   dimnames(x) <- dn
   NextMethod("print")
 }
-
 
 setOldClass("Oarray")
 
