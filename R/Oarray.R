@@ -91,7 +91,6 @@ function(data=NA, dim=length(data), dimnames=NULL, offset=rep(1, length(dim)),
   dn <- attr(x, "drop.negative")
   dim <- dim(x)
 
-      browser()
   if( k==3 ){
     if(mc[[3]] == ""){
       return(as.array(x))
